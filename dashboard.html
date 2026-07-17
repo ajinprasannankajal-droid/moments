@@ -6,16 +6,16 @@
   <title>Dashboard - MOMENTS YSS</title>
 </head>
 <body>
-  <!-- നിങ്ങളുടെ ഡാഷ്ബോർഡ് ഡിസൈൻ ഇവിടെ -->
+  <div id="content">
+    <h1>Welcome to Dashboard</h1>
+    <button onclick="logout()">Logout</button>
+  </div>
 
   <script>
-    // ലോഗിൻ പരിശോധന
+    // ലോഗിൻ ചെയ്തിട്ടുണ്ടോ എന്ന് പരിശോധിക്കുന്നു
     if (localStorage.getItem("isLoggedIn") !== "true") {
       window.location.href = "index.html";
     }
-
-    // പുതിയ ലിങ്ക് ഇവിടെയും അപ്‌ഡേറ്റ് ചെയ്തു
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwgqBrTtyMbFqd8PoBq-X5DxKHQ3mdlDqQJS_RCZqD9WTgLEzJil4GPlGov9sCmgM2g/exec";
 
     function logout() {
       localStorage.removeItem("isLoggedIn");
