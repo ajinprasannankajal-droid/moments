@@ -1,0 +1,141 @@
+<!--[cite: 3] -->
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; }
+  body { background: #f4f6f9; color: #0f172a; }
+  #app { display: flex; flex-direction: row; height: 100vh; overflow: hidden; }
+  
+  /* Sidebar styles */
+  .sidebar { width: 260px; background: #0f172a; color: white; padding: 20px; display: flex; flex-direction: column; justify-content: space-between; shrink: 0; }
+  .sidebar h2 { text-align: center; margin-bottom: 20px; font-size: 1.4rem; border-bottom: 1px solid #1e293b; padding-bottom: 15px; font-weight: 800; letter-spacing: 0.5px;}
+  .sidebar ul { list-style: none; flex-grow: 1; }
+  .sidebar li { padding: 11px 15px; margin-bottom: 6px; cursor: pointer; border-radius: 8px; font-size: 14px; font-weight: 500; transition: all 0.2s ease; }
+  .sidebar li:hover { background: #16a34a; }
+  
+  .logout-btn { 
+    background: #dc2626; 
+    color: white !important; 
+    text-align: center; 
+    font-weight: bold; 
+    font-size: 12px; 
+    padding: 8px 12px; 
+    border-radius: 6px; 
+    cursor: pointer;
+    margin-top: 15px;
+    width: 100%;
+    border: none;
+    transition: background 0.2s;
+  }
+  .logout-btn:hover { background: #b91c1c !important; }
+
+  .update-info {
+    font-size: 10px;
+    color: #94a3b8 !important;
+    text-align: center;
+    margin-top: 8px;
+    letter-spacing: 0.3px;
+  }
+  
+  /* Content Area */
+  .content { flex: 1; padding: 20px; overflow-y: auto; width: 100%; }
+  .card-box { display: flex; gap: 15px; margin-bottom: 20px; flex-wrap: wrap; }
+  .card { flex: 1; min-width: 180px; background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02); text-align: center; border: 1px solid #e2e8f0; }
+  .card h3 { font-size: 14px; color: #64748b; font-weight: 600; margin-bottom: 8px; text-transform: uppercase; }
+  .card h2 { color: #16a34a; font-size: 1.6rem; font-weight: 800; }
+  
+  .fund-breakup {
+    font-size: 11px;
+    color: #64748b;
+    margin-top: 8px;
+    line-height: 1.4;
+  }
+  .fund-breakup b {
+    color: #334155;
+  }
+
+  .search { margin: 20px 0; }
+  .search input { width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 14px; }
+  
+  table { width: 100%; background: white; border-collapse: collapse; min-width: 450px; font-size: 14px; }
+  th { background: #16a34a; color: white !important; padding: 12px 10px; text-align: left; font-weight: bold; }
+  td { padding: 12px 10px; border-bottom: 1px solid #e2e8f0; }
+
+  @media (max-width: 768px) {
+    #app { flex-direction: column; height: auto; overflow: visible; }
+    .sidebar { width: 100%; height: auto; padding: 15px; }
+    .sidebar h2 { margin-bottom: 15px; padding-bottom: 8px; font-size: 1.2rem; }
+    .sidebar ul { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+    .sidebar li { padding: 10px; margin-bottom: 0; font-size: 12px; text-align: center; }
+    .sidebar div:last-child {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+    }
+    .logout-btn { margin-top: 10px; width: 100%; padding: 10px; font-size: 13px; }
+    .update-info { margin-top: 6px; font-size: 11px; }
+    .content { padding: 15px; }
+    .card-box { gap: 10px; }
+    .card { min-width: 100%; padding: 15px; }
+  }
+</style>
+
+<div id="app">
+  <div class="sidebar">
+    <div>
+      <h2>MOMENTS YSS</h2>
+      <ul>
+        <li onclick="showPage('dashboard')">🏠 Dashboard</li>
+        <li onclick="showPage('dashboard')">👥 Members</li>
+        <li onclick="showPage('personal')">💳 Personal Loan</li>
+        <li onclick="showPage('onam')">💰 Onam Fund Loan</li>
+        <li onclick="showPage('onamMonthly')">📅 Onam Fund Monthly</li>
+        <li onclick="showPage('trip')">✈️ Trip Fund Loan</li>
+        <li onclick="showPage('chitty')">🏦 Chitty Fund Monthly</li>
+      </ul>
+    </div>
+    
+    <div style="padding-top: 15px; border-top: 1px solid #1e293b;">
+      <button onclick="logout()" class="logout-btn">🚪 Logout</button>
+      <div class="update-info">Last updated: 17.07.2026</div>
+    </div>
+  </div>
+
+  <div class="content">
+    <div id="main-dashboard-content">
+      <div class="card-box">
+        <div class="card">
+          <h3>Total Members</h3>
+          <h2 id="memberCount" style="color: #0f172a;">0</h2>
+        </div>
+        <div class="card">
+          <h3>Total Weekly Savings</h3>
+          <h2 id="totalSaving">₹0</h2>
+        </div>
+        <div class="card" style="background: #f8fafc; border: 1.5px dashed #cbd5e1; min-height: 135px; display: flex; flex-direction: column; justify-content: center;">
+          <h3>Total Fund 💰</h3>
+          <h2 id="totalFund" style="color: #0f172a; font-size: 1.7rem; margin-bottom: 4px;">Loading...</h2>
+          <div id="totalFundBreakup" class="fund-breakup">Calculating breakup...</div>
+        </div>
+      </div>
+
+      <div class="search">
+        <input id="search" placeholder="Search member name or ID..." onkeyup="searchMember()">
+      </div>
+
+      <div style="overflow-x: auto; background: white; border-radius: 8px; box-shadow: 0 1px 4px rgba(0,0,0,0.1); margin-bottom: 20px;">
+        <table>
+          <thead>
+            <tr>
+              <th style="width: 80px;">ID</th>
+              <th>Member Name</th>
+              <th>Weekly Savings</th>
+            </tr>
+          </thead>
+          <tbody id="members"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div id="page"></div>
+  </div>
+</div>
