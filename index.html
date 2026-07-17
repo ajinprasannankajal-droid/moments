@@ -5,23 +5,21 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>MOMENTS YSS - Login</title>
   <style>
-    body { background: linear-gradient(135deg, #f1f5f9 0%, #cbd5e1 100%); display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; font-family: sans-serif; }
-    .login { width: 90%; max-width: 350px; background: white; padding: 30px; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); text-align: center; }
-    input { width: 100%; padding: 12px; margin: 15px 0; border: 1px solid #cbd5e1; border-radius: 8px; box-sizing: border-box; }
+    body { background: #f1f5f9; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; font-family: sans-serif; }
+    .login { width: 90%; max-width: 350px; background: white; padding: 30px; border-radius: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); text-align: center; }
+    input { width: 100%; padding: 12px; margin: 15px 0; border: 1px solid #ccc; border-radius: 8px; box-sizing: border-box; }
     button { width: 100%; padding: 12px; background: #16a34a; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; }
   </style>
 </head>
 <body>
   <div class="login">
     <h2>MOMENTS YSS</h2>
-    <p>Financial Portal</p>
     <input type="password" id="pass" placeholder="Enter Password">
     <button onclick="login()">Secure Login</button>
     <div id="msg" style="margin-top:15px; color:red;"></div>
   </div>
 
   <script>
-    // പുതിയ ലിങ്ക് അപ്‌ഡേറ്റ് ചെയ്തു
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwgqBrTtyMbFqd8PoBq-X5DxKHQ3mdlDqQJS_RCZqD9WTgLEzJil4GPlGov9sCmgM2g/exec";
     
     function login() {
@@ -29,17 +27,20 @@
       var msg = document.getElementById("msg");
       msg.innerHTML = "Authenticating...";
       
-      fetch(`${SCRIPT_URL}?action=checkLogin&password=${encodeURIComponent(pass)}`)
-        .then(res => res.json())
-        .then(data => {
-          if (data.success) {
-            localStorage.setItem("isLoggedIn", "true");
-            window.location.href = "dashboard.html";
-          } else {
-            msg.innerHTML = "Wrong Password! ❌";
-          }
-        })
-        .catch(err => { msg.innerHTML = "Error: Check Console"; console.error(err); });
+      fetch(`${SCRIPT_URL}?action=checkLogin&password=${encodeURIComponent(pass)}`, {
+        method: 'GET',
+        mode: 'cors'
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          localStorage.setItem("isLoggedIn", "true");
+          window.location.href = "dashboard.html";
+        } else {
+          msg.innerHTML = "Wrong Password! ❌";
+        }
+      })
+      .catch(err => { msg.innerHTML = "Connection Error!"; console.error(err); });
     }
   </script>
 </body>
